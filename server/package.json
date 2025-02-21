@@ -1,0 +1,14 @@
+{
+  "name": "@kafka-streaming/server",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@kafka-streaming/kafka": "^1.0.0"
+  }
+}

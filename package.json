@@ -1,0 +1,31 @@
+{
+  "name": "kafka-streaming",
+  "version": "1.0.0",
+  "description": "Node.JS Application built with Typescript to implement Kafka Integration",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc --build --verbose",
+    "clean-build": "rimraf ./dist && npm run build && npm run build -ws --if-present",
+    "start": "ts-node-dev ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@kafka-streaming/server": "^1.0.0",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  },
+  "workspaces": [
+    "server",
+    "kafka"
+  ]
+}
