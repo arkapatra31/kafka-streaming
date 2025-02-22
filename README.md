@@ -72,6 +72,7 @@ flowchart LR
     npm run clean-build
     ```
 
+### Utility Commands
 The application uses NPM workspaces for package management and package dependency. Here are some useful commands:
 
 1. Create a new package:
@@ -97,7 +98,7 @@ The application uses NPM workspaces for package management and package dependenc
     npm start
     ```
 
-3. The server will be running on port 3000.
+3. The Express server will be running on port 3000.
 
 ### API Endpoints
 
