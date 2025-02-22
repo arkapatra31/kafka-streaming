@@ -161,3 +161,6 @@ The server setup and routing are handled in [index.ts](http://_vscodecontentref_
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Author
+@arkapatra31
