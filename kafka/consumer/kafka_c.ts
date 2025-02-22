@@ -4,7 +4,7 @@ import { kafka } from "../connection/connect_to_kafka";
 export async function run_consumer(topic: string) {
     try {
         // Create a consumer
-        const consumer = kafka.consumer({ groupId: 'test-group' });
+        const consumer = kafka.consumer({ groupId: 'test-group', retry: { retries: 10 } });
 
         // Connect Consumer to the broker
         await consumer.connect();
@@ -27,7 +27,7 @@ export async function run_consumer(topic: string) {
         });
 
         // Wait for a few seconds to ensure messages are consumed
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 10000));
 
         return {
             response: messages,
@@ -35,10 +35,15 @@ export async function run_consumer(topic: string) {
         };
 
     } catch (e: any) {
-        console.error(e);
-        return {
-            response: e,
-            status: 500
-        };
+        if (e.type === 'REBALANCE_IN_PROGRESS') {
+            console.warn('Rebalancing in progress, retrying...');
+            return run_consumer(topic); // Retry the consumer
+        } else {
+            console.error(e);
+            return {
+                response: e,
+                status: 500
+            };
+        }
     }
 }

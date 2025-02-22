@@ -12,7 +12,7 @@ export async function createTopics(topicList: string[]) {
         const topics: ITopicConfig[] = topicList.map((topic) => {
             return {
                 topic: topic,
-                numPartitions: 2,
+                numPartitions: 100,
             };
         });
 
