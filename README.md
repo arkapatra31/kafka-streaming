@@ -101,6 +101,16 @@ The application uses NPM workspaces for package management and package dependenc
 
 ### API Endpoints
 
+- **Create Topic**
+- **URL:** `/createTopic`
+    - **Method:** `POST`
+    - **Description:** Creates Kafka topic.
+    - **Payload Example:**
+      ```json
+      {
+          "topics": "Comma separated Topics"
+      }
+
 - **Publish Message**
     - **URL:** `/publish`
     - **Method:** `POST`
@@ -117,8 +127,13 @@ The application uses NPM workspaces for package management and package dependenc
 
 - **Consume Message**
     - **URL:** `/consume`
-    - **Method:** `GET`
+    - **Method:** `POST`
     - **Description:** Consumes messages from the Kafka topic.
+    - **Payload Example:**
+      ```json
+      {
+          "topic": "your-topic-name"
+      }
 
 ## Project Details
 
