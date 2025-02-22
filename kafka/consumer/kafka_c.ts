@@ -1,6 +1,7 @@
+import { KafkaMessage } from "kafkajs";
 import { kafka } from "../connection/connect_to_kafka";
 
-export async function run_consumer() {
+export async function run_consumer(topic: string) {
     try {
         // Create a consumer
         const consumer = kafka.consumer({ groupId: 'test-group' });
@@ -9,45 +10,27 @@ export async function run_consumer() {
         await consumer.connect();
 
         // Subscribe to the topic
-        await consumer.subscribe({ topic: 'test-topic', fromBeginning: true });
+        await consumer.subscribe({ topic, fromBeginning: true });
 
-        // Run the consumer
-        // const consumerResponse = await consumer.run({
-        //     eachMessage: async ({ topic, partition, message }) => {
-        //         console.log({
-        //             value: message?.value?.toString(),
-        //         });
-
-        //         kafka.logger().info('Message processed', {
-        //             topic,
-        //             partition,
-        //             offset: message.offset,
-        //             value: message.value?.toString(),
-        //         });
-        //     },
-        // });
-
-        //Run the consumer and fetch the topic messages and return the response
-        const consumerResponse = await consumer.run({
+        // Run the consumer and fetch the topic messages and return the response
+        const messages: any[] = [];
+        await consumer.run({
             eachMessage: async ({ topic, partition, message }) => {
-                console.log({
-                    value: message?.value?.toString(),
+                const parsedMessage = JSON.parse(message?.value?.toString() || "{}");
+                messages.push({
+                    topic: topic,
+                    partition: partition,
+                    message: parsedMessage
                 });
-
-                kafka.logger().info('Message processed', {
-                    topic,
-                    partition,
-                    offset: message.offset,
-                    value: message.value?.toString(),
-                });
+                console.log(`Received message: ${JSON.stringify(parsedMessage)}`);
             },
         });
 
-        // Disconnect the consumer
-        //await consumer.disconnect();
+        // Wait for a few seconds to ensure messages are consumed
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
         return {
-            response: consumerResponse,
+            response: messages,
             status: 200
         };
 

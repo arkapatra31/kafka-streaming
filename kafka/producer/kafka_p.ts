@@ -1,22 +1,26 @@
+import { Partitioners } from "kafkajs";
 import { kafka } from "../connection/connect_to_kafka";
-export async function createProducer() {
+
+export async function createProducer(topic: string, message: any) {
     try {
         // Create a producer
-        const producer = kafka.producer();
+        const producer = kafka.producer({
+            createPartitioner: Partitioners.LegacyPartitioner,
+        });
 
         // Connect to the broker
         await producer.connect();
 
         // Publish a message to the topic
         const publishResponse = await producer.send({
-            topic: "test-topic",
-            messages: [{ value: "Hello" }],
+            topic,
+            messages: [{ value: JSON.stringify(message) }],
         });
 
         kafka.logger().debug(`Published message: ${JSON.stringify(publishResponse)}`);
 
         // Disconnect the producer
-        //await producer.disconnect();
+        await producer.disconnect();
 
         return {
             response: publishResponse,
